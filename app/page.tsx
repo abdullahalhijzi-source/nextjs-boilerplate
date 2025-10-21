@@ -1,25 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 const SERVER_URL = 'https://www.roblox.com/share?code=8f925a6a800a814584d19c30846d7a59&type=Server';
 
-// Brainrot cards (first uses your uploaded Spaghettitualetti.png)
 const BRAINROTS = [
-  { id: 'spaghetti', name: 'Spaghetti Tualetti', img: '/Spaghettitualetti.png' },
-  { id: 'meowl', name: 'Meowl', img: '/placeholder.png' },
-  { id: 'dragon', name: 'Dragon Cannelloni', img: '/placeholder.png' },
-  { id: 'grande', name: 'La Grande Combinasion', img: '/placeholder.png' },
-  { id: 'straw', name: 'Strawberry Elephant', img: '/placeholder.png' },
-  { id: 'mobilis', name: 'Los Mobilis', img: '/placeholder.png' },
-  { id: 'esok', name: 'Esok Sekolah', img: '/placeholder.png' },
-  { id: 'garama', name: 'Garama & Madundung', img: '/placeholder.png' },
+  { id: 'spaghetti', name: 'Spaghetti Tualetti', src: '/Spaghettitualetti.png' },
+  { id: 'meowl', name: 'Meowl', src: '/Meowl.png' },
+  { id: 'dragon', name: 'Dragon Cannelloni', src: '/Dragon.png' },
+  { id: 'grande', name: 'La Grande Combinasion', src: '/LaGrandeCombinasion.png' },
+  { id: 'straw', name: 'Strawberry Elephant', src: '/StrawberryElephant.png' },
+  { id: 'mobilis', name: 'Los Mobilis', src: '/LosMobilis.png' },
+  { id: 'esok', name: 'Esok Sekolah', src: '/EsokSekolah.png' },
+  { id: 'garama', name: 'Garama & Madundung', src: '/GaramaMadundung.png' },
 ];
 
 export default function Page() {
+  const [selected, setSelected] = useState<string | null>(null);
+
   function openServer(brainrotId: string) {
-    // try building a url with query param; fallback if URL fails
     try {
       const url = new URL(SERVER_URL);
       url.searchParams.set('brainrot', brainrotId);
@@ -29,13 +29,19 @@ export default function Page() {
     }
   }
 
-  async function copyToClipboard(text: string) {
+  async function copyLink(link: string) {
     try {
-      await navigator.clipboard.writeText(text);
-      void alert('Copied to clipboard.');
+      await navigator.clipboard.writeText(link);
+      alert('Link copied to clipboard.');
     } catch {
-      void alert('Could not copy automatically. Please copy manually:\n' + text);
+      alert('Could not copy automatically. Please copy manually:\n' + link);
     }
+  }
+
+  function onEnterClick() {
+    const id = selected ?? BRAINROTS[0].id;
+    openServer(id);
+    copyLink(`${SERVER_URL}?brainrot=${encodeURIComponent(id)}`);
   }
 
   return (
@@ -43,100 +49,117 @@ export default function Page() {
       <div className="page">
         <header className="header">
           <div className="brand">
-            <h1 className="title">MOREIRA METHOD <span className="beta">— BETA PHASE</span></h1>
-            <p className="subtitle">Choose a Brainrot — your selection will be passed to the server.</p>
+            <div className="glow">▢</div>
+            <h1 className="title"><span className="neon">MOREIRA METHOD</span></h1>
+            <div className="glow">▢</div>
           </div>
-
-          <div className="actions">
-            <button className="btn btn-outline" onClick={() => copyToClipboard(SERVER_URL)}>Copy Server Link</button>
-            <a className="btn btn-primary" href={SERVER_URL} target="_blank" rel="noreferrer">Go to Server</a>
-          </div>
+          <div className="beta">BETA PHASE</div>
         </header>
 
-        <main className="container">
+        <main className="main">
+          <h2 className="choose">Choose A Brainrot:</h2>
+
           <section className="grid">
-            {BRAINROTS.map(b => (
-              <article className="card" key={b.id}>
-                <div className="card-top">
-                  <div className="img-wrap">
-                    <Image src={b.img} alt={b.name} width={120} height={120} style={{ objectFit: 'cover' }} />
+            {BRAINROTS.map((b) => {
+              const isSelected = selected === b.id;
+              return (
+                <button
+                  key={b.id}
+                  className={`card ${isSelected ? 'card-selected' : ''}`}
+                  onClick={() => setSelected(b.id)}
+                >
+                  <div className="circle">
+                    <Image src={b.src} alt={b.name} width={120} height={120} style={{ objectFit: 'cover' }} />
                   </div>
-                  <div className="card-info">
-                    <h3>{b.name}</h3>
-                    <p className="tagline">click to join or copy link</p>
-                  </div>
-                </div>
-
-                <div className="card-actions">
-                  <button
-                    className="btn btn-outline small"
-                    onClick={() => {
-                      openServer(b.id);
-                      copyToClipboard(`${SERVER_URL}?brainrot=${encodeURIComponent(b.id)}`);
-                    }}
-                  >
-                    Enter & Copy Tag
-                  </button>
-
-                  <button
-                    className="btn btn-primary small"
-                    onClick={() => copyToClipboard(`${SERVER_URL}?brainrot=${encodeURIComponent(b.id)}`)}
-                  >
-                    Copy Link
-                  </button>
-                </div>
-              </article>
-            ))}
+                  <div className="name">{b.name}</div>
+                </button>
+              );
+            })}
           </section>
+
+          <div className="cta-wrap">
+            <button className="go-btn" onClick={onEnterClick}>Go to Server</button>
+          </div>
         </main>
 
         <footer className="footer">Tip: edit <code>app/page.tsx</code> to change images or the server link.</footer>
       </div>
 
-      {/* Styles (component-local) */}
       <style jsx>{`
         :root {
-          --bg: #060609;
-          --card: #0f1724;
+          --bg: #040305;
           --muted: #9ca3af;
-          --accent: #111827;
+          --card: #0f1724;
+          --accent: #ff1e1e;
         }
         .page {
           min-height: 100vh;
-          background: linear-gradient(180deg, #050508 0%, #0b0b0d 100%);
+          background: radial-gradient(circle at 50% 10%, rgba(255,0,0,0.02), rgba(0,0,0,0.95)), var(--bg);
           color: #fff;
-          font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-          padding: 32px;
+          font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+          padding: 36px 20px;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
         }
-        .header {
-          max-width: 1100px;
-          margin: 0 auto 28px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 12px;
+
+        /* Header / neon title */
+        .header { text-align:center; margin: 6px 0 18px; }
+        .brand { display:flex; align-items:center; gap:12px; justify-content:center; }
+        .glow { color: #ff3b3b; font-weight:700; opacity:0.9; text-shadow: 0 0 6px rgba(255,59,59,0.6); }
+        .title { margin:0; font-size: 34px; letter-spacing:2px; }
+        .neon { color:#ff3b3b; text-shadow: 0 6px 24px rgba(255,30,30,0.55), 0 0 8px rgba(255,30,30,0.45); font-weight:800; }
+        .beta { color: var(--muted); margin-top:8px; font-size:13px; }
+
+        .main { width: 100%; max-width: 980px; margin-top: 18px; }
+        .choose { text-align:center; color:var(--muted); margin: 18px 0; font-size:18px; }
+
+        .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:18px; padding: 6px; }
+
+        .card {
+          background: #0b0d10;
+          border-radius: 14px;
+          padding: 18px;
+          border: 1px solid rgba(255,255,255,0.03);
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          gap:12px;
+          cursor:pointer;
+          transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.6);
         }
-        .title { font-size: 26px; margin: 0; letter-spacing: 0.6px; }
-        .beta { font-size: 12px; opacity: .8; margin-left: 8px; font-weight: 600; }
-        .subtitle { margin-top: 6px; color: var(--muted); font-size: 13px; }
-        .actions { display:flex; gap:10px; align-items:center; }
-        .btn { border-radius: 10px; padding: 10px 14px; cursor: pointer; font-weight: 600; text-decoration: none; display:inline-flex; align-items:center; justify-content:center; }
-        .btn-primary { background: var(--accent); color: #fff; border: 1px solid rgba(255,255,255,0.04); }
-        .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.08); }
-        .container { max-width: 1100px; margin: 0 auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
-        .card { background: var(--card); padding: 14px; border-radius: 14px; display:flex; flex-direction:column; justify-content:space-between; min-height:160px; box-shadow: 0 8px 24px rgba(2,6,23,0.6); transition: transform .14s ease, box-shadow .14s ease; }
-        .card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,0.8); }
-        .card-top { display:flex; gap:12px; align-items:center; }
-        .img-wrap { width:84px; height:84px; border-radius:12px; overflow:hidden; background:#07101b; display:flex; align-items:center; justify-content:center; }
-        .card-info h3 { margin:0; font-size:16px; }
-        .tagline { margin:6px 0 0; color: var(--muted); font-size:13px; }
-        .card-actions { margin-top:12px; display:flex; gap:8px; }
-        .small { padding:8px 10px; font-size:13px; }
-        .footer { margin-top:28px; text-align:center; color:var(--muted); }
-        code { background:#07101b; padding:4px 8px; border-radius:6px; font-size:13px; }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.7); }
+        .card-selected {
+          border-color: rgba(255,20,20,0.85);
+          box-shadow: 0 0 0 6px rgba(255,20,20,0.08), 0 18px 40px rgba(0,0,0,0.7);
+        }
+
+        .circle { width:120px; height:120px; border-radius:999px; overflow:hidden; display:flex; align-items:center; justify-content:center; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.03), transparent 30%); }
+        .name { font-weight:700; margin-top:6px; text-align:center; font-size:16px; color:#fff; }
+
+        .cta-wrap { display:flex; justify-content:center; margin-top:28px; }
+        .go-btn {
+          background: linear-gradient(180deg, #ff2b2b, #e01212);
+          border: none;
+          color: white;
+          padding: 16px 40px;
+          border-radius: 36px;
+          font-weight: 800;
+          font-size: 18px;
+          box-shadow: 0 12px 30px rgba(224,18,18,0.36), inset 0 -4px 12px rgba(0,0,0,0.2);
+          cursor:pointer;
+          transition: transform .12s ease, box-shadow .12s ease;
+        }
+        .go-btn:hover { transform: translateY(-3px); box-shadow: 0 18px 46px rgba(224,18,18,0.46); }
+
+        .footer { margin-top: 36px; color: var(--muted); font-size:13px; }
+
+        code { background:#0b0f13; padding:4px 8px; border-radius:6px; }
+
         @media (max-width:580px) {
-          .header { flex-direction: column; align-items: flex-start; gap:16px; }
+          .title { font-size: 22px; }
+          .circle { width:100px; height:100px; }
         }
       `}</style>
     </>
