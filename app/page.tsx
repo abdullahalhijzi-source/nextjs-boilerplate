@@ -10,7 +10,7 @@ const BRAINROTS = [
   { id: 'meowl', name: 'Meowl', img: '/Clear-background-clear-meowl-image.png' },
   { id: 'dragon', name: 'Dragon Cannelloni', img: '/Dragoncannelloni.png' },
   { id: 'grande', name: 'La Grande Combinasion', img: '/Carti.png' },
-  { id: 'strawberry', name: 'Strawberry Elephant', img: '/Strawberyelephant.png' },
+  { id: 'strawberry', name: 'Strawberry Elephant', img: '/Strawberryelephant.png' },
   { id: 'mobilis', name: 'Los Mobilis', img: '/Losmobil.png' },
   { id: 'esok', name: 'Esok Sekolah', img: '/Esok-Sekolah2.png' },
   { id: 'garama', name: 'Garama & Madundung', img: '/Garamadundung.png' },
