@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const SERVER_URL = "https://your-private-server-link-here"; // replace this
+const SERVER_URL = "https://www.roblox.com/share?code=8f925a6a800a814584d19c30846d7a59&type=Server"; // replace this
 
 export default function Home() {
   return (
