@@ -3,14 +3,15 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-const SERVER_URL = 'https://www.roblox.com/share?code=8f925a6a800a814584d19c30846d7a59&type=Server';
+const SERVER_URL =
+  'https://www.roblox.com/share?code=8f925a6a800a814584d19c30846d7a59&type=Server';
 
 const BRAINROTS = [
   { id: 'spaghetti', name: 'Spaghetti Tualetti', img: '/Spaghettitualetti.png' },
   { id: 'meowl', name: 'Meowl', img: '/Clear-background-clear-meowl-image.png' },
-  { id: 'dragon', name: 'Dragon Cannelloni', img: '/Dragoncannelloni.png' },
+  { id: 'dragon', name: 'Dragon Cannelloni', img: '/Dragoncanneloni.png' },
   { id: 'grande', name: 'La Grande Combinasion', img: '/Carti.png' },
-  { id: 'strawberry', name: 'Strawberry Elephant', img: '/Strawberryelephant.png' },
+  { id: 'strawberry', name: 'Strawberry Elephant', img: '/Strawberyelephant.png' },
   { id: 'mobilis', name: 'Los Mobilis', img: '/Losmobil.png' },
   { id: 'esok', name: 'Esok Sekolah', img: '/Esok-Sekolah2.png' },
   { id: 'garama', name: 'Garama & Madundung', img: '/Garamadundung.png' },
@@ -35,7 +36,9 @@ export default function Page() {
             key={b.id}
             onClick={() => setSelectedId(b.id)}
             className={`flex flex-col items-center bg-neutral-900 p-4 rounded-xl border ${
-              selectedId === b.id ? 'border-red-500 shadow-[0_0_10px_red]' : 'border-neutral-800'
+              selectedId === b.id
+                ? 'border-red-500 shadow-[0_0_10px_red]'
+                : 'border-neutral-800'
             }`}
           >
             <div className="w-28 h-28 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center">
