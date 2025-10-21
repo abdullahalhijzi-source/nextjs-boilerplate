@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const SERVER_URL = 'https://www.roblox.com/share?code=8f925a6a800a814584d19c30846d7a59&type=Server';
 
-// List of "brainrots" — update names/images as you like
+// Brainrot cards (first uses your uploaded Spaghettitualetti.png)
 const BRAINROTS = [
   { id: 'spaghetti', name: 'Spaghetti Tualetti', img: '/Spaghettitualetti.png' },
   { id: 'meowl', name: 'Meowl', img: '/placeholder.png' },
@@ -17,105 +17,128 @@ const BRAINROTS = [
   { id: 'garama', name: 'Garama & Madundung', img: '/placeholder.png' },
 ];
 
-export default function Home() {
-  function openServerWith(brainrotId: string) {
+export default function Page() {
+  function openServer(brainrotId: string) {
+    // try building a url with query param; fallback if URL fails
     try {
-      // add query so you can detect which brainrot user clicked
       const url = new URL(SERVER_URL);
       url.searchParams.set('brainrot', brainrotId);
       window.open(url.toString(), '_blank');
-    } catch (e) {
-      // fallback for special URLs that might not parse with URL()
+    } catch {
       window.open(`${SERVER_URL}?brainrot=${encodeURIComponent(brainrotId)}`, '_blank');
     }
   }
 
-  async function copyLink(text: string) {
+  async function copyToClipboard(text: string) {
     try {
       await navigator.clipboard.writeText(text);
-      alert('Link copied to clipboard.');
+      void alert('Copied to clipboard.');
     } catch {
-      alert('Could not copy — please copy manually: ' + text);
+      void alert('Could not copy automatically. Please copy manually:\n' + text);
     }
   }
 
   return (
-    <div style={styles.page}>
-      <header style={styles.header}>
-        <div>
-          <h1 style={styles.title}>MOREIRA METHOD <span style={styles.beta}>— BETA PHASE</span></h1>
-          <p style={styles.subtitle}>Choose a Brainrot and jump into the server — your selection will be passed along.</p>
-        </div>
+    <>
+      <div className="page">
+        <header className="header">
+          <div className="brand">
+            <h1 className="title">MOREIRA METHOD <span className="beta">— BETA PHASE</span></h1>
+            <p className="subtitle">Choose a Brainrot — your selection will be passed to the server.</p>
+          </div>
 
-        <div style={styles.headerButtons}>
-          <button style={styles.btnLight} onClick={() => copyLink(SERVER_URL)}>Copy Server Link</button>
-          <a href={SERVER_URL} target="_blank" rel="noopener noreferrer" style={styles.btnDark}>Go to Server</a>
-        </div>
-      </header>
+          <div className="actions">
+            <button className="btn btn-outline" onClick={() => copyToClipboard(SERVER_URL)}>Copy Server Link</button>
+            <a className="btn btn-primary" href={SERVER_URL} target="_blank" rel="noreferrer">Go to Server</a>
+          </div>
+        </header>
 
-      <main style={styles.gridWrap}>
-        <div style={styles.grid}>
-          {BRAINROTS.map((b) => (
-            <article key={b.id} style={styles.card}>
-              <div style={styles.cardTop}>
-                <div style={styles.imgWrap}>
-                  <Image src={b.img} alt={b.name} width={120} height={120} style={{ borderRadius: 12 }} />
+        <main className="container">
+          <section className="grid">
+            {BRAINROTS.map(b => (
+              <article className="card" key={b.id}>
+                <div className="card-top">
+                  <div className="img-wrap">
+                    <Image src={b.img} alt={b.name} width={120} height={120} style={{ objectFit: 'cover' }} />
+                  </div>
+                  <div className="card-info">
+                    <h3>{b.name}</h3>
+                    <p className="tagline">click to join or copy link</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 style={styles.cardTitle}>{b.name}</h3>
+
+                <div className="card-actions">
+                  <button
+                    className="btn btn-outline small"
+                    onClick={() => {
+                      openServer(b.id);
+                      copyToClipboard(`${SERVER_URL}?brainrot=${encodeURIComponent(b.id)}`);
+                    }}
+                  >
+                    Enter & Copy Tag
+                  </button>
+
+                  <button
+                    className="btn btn-primary small"
+                    onClick={() => copyToClipboard(`${SERVER_URL}?brainrot=${encodeURIComponent(b.id)}`)}
+                  >
+                    Copy Link
+                  </button>
                 </div>
-              </div>
+              </article>
+            ))}
+          </section>
+        </main>
 
-              <div style={styles.cardActions}>
-                <button
-                  style={styles.btnOutline}
-                  onClick={() => {
-                    openServerWith(b.id);
-                    copyLink(`${SERVER_URL}?brainrot=${encodeURIComponent(b.id)}`);
-                  }}
-                >
-                  Enter & Copy Tag
-                </button>
+        <footer className="footer">Tip: edit <code>app/page.tsx</code> to change images or the server link.</footer>
+      </div>
 
-                <button
-                  style={styles.btnSolid}
-                  onClick={() => copyLink(`${SERVER_URL}?brainrot=${encodeURIComponent(b.id)}`)}
-                >
-                  Copy Link
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
-      </main>
-
-      <footer style={styles.footer}>
-        Tip: Edit <code style={styles.code}>app/page.tsx</code> to change images or the server URL.
-      </footer>
-    </div>
+      {/* Styles (component-local) */}
+      <style jsx>{`
+        :root {
+          --bg: #060609;
+          --card: #0f1724;
+          --muted: #9ca3af;
+          --accent: #111827;
+        }
+        .page {
+          min-height: 100vh;
+          background: linear-gradient(180deg, #050508 0%, #0b0b0d 100%);
+          color: #fff;
+          font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+          padding: 32px;
+        }
+        .header {
+          max-width: 1100px;
+          margin: 0 auto 28px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 12px;
+        }
+        .title { font-size: 26px; margin: 0; letter-spacing: 0.6px; }
+        .beta { font-size: 12px; opacity: .8; margin-left: 8px; font-weight: 600; }
+        .subtitle { margin-top: 6px; color: var(--muted); font-size: 13px; }
+        .actions { display:flex; gap:10px; align-items:center; }
+        .btn { border-radius: 10px; padding: 10px 14px; cursor: pointer; font-weight: 600; text-decoration: none; display:inline-flex; align-items:center; justify-content:center; }
+        .btn-primary { background: var(--accent); color: #fff; border: 1px solid rgba(255,255,255,0.04); }
+        .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.08); }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+        .card { background: var(--card); padding: 14px; border-radius: 14px; display:flex; flex-direction:column; justify-content:space-between; min-height:160px; box-shadow: 0 8px 24px rgba(2,6,23,0.6); transition: transform .14s ease, box-shadow .14s ease; }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,0.8); }
+        .card-top { display:flex; gap:12px; align-items:center; }
+        .img-wrap { width:84px; height:84px; border-radius:12px; overflow:hidden; background:#07101b; display:flex; align-items:center; justify-content:center; }
+        .card-info h3 { margin:0; font-size:16px; }
+        .tagline { margin:6px 0 0; color: var(--muted); font-size:13px; }
+        .card-actions { margin-top:12px; display:flex; gap:8px; }
+        .small { padding:8px 10px; font-size:13px; }
+        .footer { margin-top:28px; text-align:center; color:var(--muted); }
+        code { background:#07101b; padding:4px 8px; border-radius:6px; font-size:13px; }
+        @media (max-width:580px) {
+          .header { flex-direction: column; align-items: flex-start; gap:16px; }
+        }
+      `}</style>
+    </>
   );
 }
-
-/* Inline styles so you don't need Tailwind — works out of the box */
-const styles: { [k: string]: React.CSSProperties } = {
-  page: { minHeight: '100vh', background: '#0b0b0b', color: '#fff', padding: 28, fontFamily: 'Inter, system-ui, Arial' },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: 1100, margin: '0 auto 28px' },
-  title: { fontSize: 26, margin: 0, letterSpacing: 0.6 },
-  beta: { fontSize: 12, opacity: 0.8, marginLeft: 8, fontWeight: 600 },
-  subtitle: { marginTop: 6, color: '#9ca3af', fontSize: 13 },
-  headerButtons: { display: 'flex', gap: 10, alignItems: 'center' },
-  btnLight: { background: 'transparent', color: '#fff', border: '1px solid #374151', padding: '8px 12px', borderRadius: 8, cursor: 'pointer' },
-  btnDark: { background: '#111827', color: '#fff', padding: '10px 14px', borderRadius: 10, textDecoration: 'none', display: 'inline-block' },
-
-  gridWrap: { maxWidth: 1100, margin: '0 auto' },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 18 },
-  card: { background: '#0f1724', padding: 14, borderRadius: 16, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 160, boxShadow: '0 6px 20px rgba(2,6,23,0.6)' },
-  cardTop: { display: 'flex', gap: 12, alignItems: 'center' },
-  imgWrap: { width: 84, height: 84, borderRadius: 12, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0b1220' },
-  cardTitle: { margin: 0, fontSize: 16 },
-  cardActions: { marginTop: 12, display: 'flex', gap: 8 },
-  btnOutline: { flex: 1, padding: '8px 10px', borderRadius: 10, border: '1px solid #374151', background: 'transparent', color: '#fff', cursor: 'pointer' },
-  btnSolid: { padding: '8px 10px', borderRadius: 10, background: '#111827', color: '#fff', cursor: 'pointer' },
-  footer: { marginTop: 28, textAlign: 'center', color: '#9ca3af' },
-  code: { background: '#0b1220', padding: '2px 6px', borderRadius: 6, fontSize: 12 }
-};
