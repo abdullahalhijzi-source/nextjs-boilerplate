@@ -7,14 +7,15 @@ const SERVER_URL =
 'https://www.roblox.com/share?code=8f925a6a800a814584d19c30846d7a59&type=Server';
 
 const BRAINROTS = [
-{ id: 'spaghetti', name: 'Spaghetti Tualetti', img: '/Spaghettitualetti.png' },
-{ id: 'meowl', name: 'Meowl', img: '/Clear-background-clear-meowl-image.png' },
-{ id: 'dragon', name: 'Dragon Cannelloni', img: '/Dragoncanneloni.png' },
-{ id: 'grande', name: 'La Grande Combinasion', img: '/Carti.png' },
-{ id: 'strawberry', name: 'Strawberry Elephant', img: '/Strawberryelephant.png' },
-{ id: 'mobilis', name: 'Los Mobilis', img: '/Losmobil.png' },
-{ id: 'esok', name: 'Esok Sekolah', img: '/Esok-Sekolah2.png' },
-{ id: 'garama', name: 'Garama & Madundung', img: '/Garamadundung.png' },
+  { id: 'spaghetti', name: 'Spaghetti Tualetti', img: '/Spaghettitualetti.png' },
+  { id: 'meowl', name: 'Meowl', img: '/Clear-background-clear-meowl-image.png' },
+  { id: 'dragon', name: 'Dragon Cannelloni', img: '/Dragoncanneloni.png' },
+  { id: 'grande', name: 'La Grande Combinasion', img: '/Carti.png' },
+  { id: 'strawberry', name: 'Strawberry Elephant', img: '/Strawberryelephant.png' },
+  { id: 'mobilis', name: 'Los Mobilis', img: '/Losmobil.png' },
+  { id: 'esok', name: 'Esok Sekolah', img: '/Esok-Sekolah2.png' },
+  { id: 'garama', name: 'Garama & Madundung', img: '/Garamadundung.png' },
+  { id: 'sixtyseven', name: '67', img: '/67.png' },
 ];
 
 export default function Page() {
