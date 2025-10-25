@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 const SERVER_URL =
-  'https://www.roblox.com/share?code=8f925a6a800a814584d19c30846d7a59&type=Server';
+  'https://www.roblox.com/games/109983668079237?privateServerLinkCode=39088151658961646871332513232373';
 
 const BRAINROTS = [
   { id: 'spaghetti', name: 'Spaghetti Tualetti', img: '/Spaghettitualetti.png', time: '30 min' },
