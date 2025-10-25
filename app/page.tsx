@@ -26,16 +26,28 @@ export default function Page() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-8">
+      {/* 🔥 Title */}
       <h1 className="text-4xl font-bold text-red-600 mb-2">🔥 MOREIRA METHOD 🔥</h1>
+
+      {/* 🖼️ Added Image */}
+      <Image
+        src="/67.png"
+        alt="Logo"
+        width={220}
+        height={220}
+        className="rounded-2xl mt-4 mb-6 shadow-[0_0_20px_red]"
+      />
+
       <p className="text-gray-400 mb-8">BETA PHASE</p>
       <h2 className="text-xl mb-4">Choose A Brainrot:</h2>
 
+      {/* 🧠 Brainrot Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {BRAINROTS.map((b) => (
           <button
             key={b.id}
             onClick={() => setSelectedId(b.id)}
-            className={`flex flex-col items-center bg-neutral-900 p-4 rounded-xl border ${
+            className={`flex flex-col items-center bg-neutral-900 p-4 rounded-xl border transition-all ${
               selectedId === b.id
                 ? 'border-red-500 shadow-[0_0_10px_red]'
                 : 'border-neutral-800'
@@ -49,6 +61,7 @@ export default function Page() {
         ))}
       </div>
 
+      {/* 🚪 Go Button */}
       <button
         onClick={handleGo}
         className="mt-10 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg transition"
