@@ -26,7 +26,7 @@ export default function Page() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-8">
-      <h1 className="text-4xl font-bold text-red-600 mb-2">✖ MOREIRA METHOD ✖</h1>
+      <h1 className="text-4xl font-bold text-red-600 mb-2">🔥 MOREIRA METHOD 🔥</h1>
       <p className="text-gray-400 mb-8">BETA PHASE</p>
       <h2 className="text-xl mb-4">Choose A Brainrot:</h2>
 
